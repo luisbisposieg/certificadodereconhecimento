@@ -158,10 +158,10 @@ function fitScale() {
   const scaler = $('scaler');
   const availW = stage.clientWidth - 40;
   const availH = stage.clientHeight - 40;
-  const scale = Math.min(availW / 1123, availH / 794, 1);
+  const scale = Math.min(availW / 1920, availH / 1080, 1);
   scaler.style.transform = `scale(${scale})`;
-  scaler.style.width = '1123px';
-  scaler.style.height = (794 * scale) + 'px';
+  scaler.style.width = '1920px';
+  scaler.style.height = (1080 * scale) + 'px';
 }
 window.addEventListener('resize', fitScale);
 
