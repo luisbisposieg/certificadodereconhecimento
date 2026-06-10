@@ -165,13 +165,17 @@ function fitScale() {
 }
 window.addEventListener('resize', fitScale);
 
-// PDF generation
-async function generatePdfBlob() {
-  // Render at full size regardless of scale
+// Canvas render
+async function renderCanvas() {
   const prevTransform = $('scaler').style.transform;
   $('scaler').style.transform = 'scale(1)';
-  const canvas = await html2canvas(cert, { scale: 2, backgroundColor: '#f3f3f6', useCORS: true });
+  const canvas = await html2canvas(cert, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
   $('scaler').style.transform = prevTransform;
+  return canvas;
+}
+
+async function generatePdfBlob() {
+  const canvas = await renderCanvas();
   const imgData = canvas.toDataURL('image/jpeg', 0.95);
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
@@ -179,17 +183,32 @@ async function generatePdfBlob() {
   return pdf.output('blob');
 }
 
+async function generatePngBlob() {
+  const canvas = await renderCanvas();
+  return await new Promise(res => canvas.toBlob(res, 'image/png'));
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
 $('btn-pdf').addEventListener('click', async () => {
   const data = readForm();
   render(data);
   await new Promise(r => setTimeout(r, 50));
   const blob = await generatePdfBlob();
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `certificado-${(data.nome||'colaborador').replace(/\s+/g,'_')}.pdf`;
-  a.click();
-  URL.revokeObjectURL(url);
+  downloadBlob(blob, `certificado-${(data.nome||'colaborador').replace(/\s+/g,'_')}.pdf`);
+});
+
+$('btn-png').addEventListener('click', async () => {
+  const data = readForm();
+  render(data);
+  await new Promise(r => setTimeout(r, 50));
+  const blob = await generatePngBlob();
+  downloadBlob(blob, `certificado-${(data.nome||'colaborador').replace(/\s+/g,'_')}.png`);
 });
 
 // CSV batch
