@@ -256,6 +256,15 @@ $('btn-zip').addEventListener('click', async () => {
 });
 
 // init
+async function loadSvgs() {
+  const [logo, deco] = await Promise.all([
+    fetch('/assets/logo.svg').then(r => r.text()),
+    fetch('/assets/union.svg').then(r => r.text()),
+  ]);
+  $('c-logo').innerHTML = logo;
+  $('c-deco').innerHTML = deco;
+}
+loadSvgs().then(() => update());
 $('f-data').valueAsDate = new Date();
 update();
 setTimeout(fitScale, 100);
