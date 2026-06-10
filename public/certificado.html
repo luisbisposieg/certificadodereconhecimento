@@ -178,8 +178,8 @@ async function generatePdfBlob() {
   const canvas = await renderCanvas();
   const imgData = canvas.toDataURL('image/jpeg', 0.95);
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-  pdf.addImage(imgData, 'JPEG', 0, 0, 297, 210);
+  const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1920, 1080], hotfixes: ['px_scaling'] });
+  pdf.addImage(imgData, 'JPEG', 0, 0, 1920, 1080);
   return pdf.output('blob');
 }
 
