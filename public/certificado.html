@@ -160,12 +160,12 @@ function update() { render(readForm()); }
 // Responsive scale of preview to fit viewport
 function fitScale() {
   const stage = document.querySelector('.stage');
-  const scaler = $('scaler');
-  const availW = stage.clientWidth - 40;
-  const availH = stage.clientHeight - 40;
+  const availW = stage.clientWidth - 32;
+  const availH = stage.clientHeight - 32;
   const scale = Math.min(availW / 1920, availH / 1080, 1);
+  const scaler = $('scaler');
   scaler.style.transform = `scale(${scale})`;
-  scaler.style.width = '1920px';
+  scaler.style.width = (1920 * scale) + 'px';
   scaler.style.height = (1080 * scale) + 'px';
 }
 window.addEventListener('resize', fitScale);
