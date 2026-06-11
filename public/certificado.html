@@ -28,11 +28,16 @@
   .btn-secondary { background: #BF8CFF; color: #110024; margin-top: 10px; }
   .btn-ghost { background: #f3f3f6; color: #110024; margin-top: 8px; }
   .divider { height: 1px; background: #e5e7eb; margin: 24px 0; }
-  .csv-zone { border: 2px dashed #d1d5db; border-radius: 10px; padding: 16px; text-align: center; font-size: 13px; color: #6b7280; cursor: pointer; }
+  .csv-zone { border: 2px dashed #d1d5db; border-radius: 10px; padding: 16px; text-align: center; font-size: 13px; color: #6b7280; cursor: pointer; display: block; }
   .csv-zone:hover { border-color: #6F2ABE; color: #110024; }
   .csv-zone input { display: none; }
-  .stage { display: flex; align-items: center; justify-content: center; padding: 40px; }
-  .scaler { transform-origin: top center; }
+  .stage { display: flex; align-items: center; justify-content: center; padding: 24px; min-width: 0; overflow: hidden; }
+  .scaler { transform-origin: top left; }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 1px solid #e5e7eb; }
+    .stage { padding: 16px; }
+  }
   /* Certificate — 1920 x 1080 landscape */
   .cert {
     width: 1920px; height: 1080px; background: #ffffff; position: relative; overflow: hidden;
@@ -155,12 +160,12 @@ function update() { render(readForm()); }
 // Responsive scale of preview to fit viewport
 function fitScale() {
   const stage = document.querySelector('.stage');
-  const scaler = $('scaler');
-  const availW = stage.clientWidth - 40;
-  const availH = stage.clientHeight - 40;
+  const availW = stage.clientWidth - 32;
+  const availH = stage.clientHeight - 32;
   const scale = Math.min(availW / 1920, availH / 1080, 1);
+  const scaler = $('scaler');
   scaler.style.transform = `scale(${scale})`;
-  scaler.style.width = '1920px';
+  scaler.style.width = (1920 * scale) + 'px';
   scaler.style.height = (1080 * scale) + 'px';
 }
 window.addEventListener('resize', fitScale);
