@@ -1,23 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Gerador de Certificados de Aniversário" },
-      { name: "description", content: "Ferramenta para gerar certificados de aniversário de casa em PDF." },
+      { title: "Gerador de Certificados de Aniversário de Casa" },
+      { name: "description", content: "Crie certificados de aniversário de empresa em PDF ou PNG, individualmente ou em lote via CSV." },
+      { property: "og:title", content: "Gerador de Certificados de Aniversário de Casa" },
+      { property: "og:description", content: "Crie certificados de aniversário de empresa em PDF ou PNG, individualmente ou em lote via CSV." },
     ],
   }),
   component: Index,
 });
 
 function Index() {
-  useEffect(() => {
-    window.location.replace("/certificado.html");
-  }, []);
   return (
-    <div style={{ fontFamily: "system-ui", padding: 40 }}>
-      Abrindo ferramenta… <a href="/certificado.html">clique aqui</a> se não redirecionar.
-    </div>
+    <iframe
+      src="/certificado.html"
+      title="Gerador de Certificados"
+      style={{ position: "fixed", inset: 0, width: "100vw", height: "100vh", border: "none" }}
+    />
   );
 }
